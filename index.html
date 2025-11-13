@@ -175,6 +175,30 @@
             color: #8e44ad;
         }
         
+        .product-flow {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .air-flow, .bus-flow {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .air-flow {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .bus-flow {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+        
         /* Improved list alignment */
         ul, ol {
             margin: 15px 0;
@@ -235,15 +259,16 @@
     <div class="container">
         <section class="content-section">
             <h2>Overview</h2>
-            <p>The Product Service Master is a core component of the Travel Module that allows administrators to configure and manage travel services for both Business-to-Business (B2B) and Direct-to-Consumer (D2C) models. This system enables flexible pricing, commission structures, and service configurations for airlines and bus operators.</p>
+            <p>The Product Service Master is a core component of the Travel Module that allows administrators to configure and manage travel services for both Business-to-Business (B2B) and Direct-to-Consumer (D2C) models. This system enables flexible pricing, commission structures, and service configurations for airlines.</p>
             
             <div class="highlight">
                 <strong>Key Features:</strong>
                 <ul>
                     <li>Dual configuration paths for B2B and D2C models</li>
                     <li>Centralized operator management through Travel Master</li>
-                    <li>Flexible slab-based pricing with service charges and commissions</li>
+                    <li>Flexible service charges and commissions</li>
                     <li>Smart operator selection with search and "All Operators" option</li>
+                    <li>Separate configuration flows for Air and Bus services</li>
                 </ul>
             </div>
         </section>
@@ -258,9 +283,9 @@ flowchart TD
     A[Admin User] --> B[Master Module]
     
     B --> C[Product Service Master]
-    B --> D[Travel Master<br>Manage Operators]
+    B --> D[Travel Master<br>Manage Airlines]
     
-    D --> E[Operator Database<br>All Airlines & Bus Companies]
+    D --> E[Operator Database<br>All Airlines]
     
     C --> F{Select User Type}
     
@@ -270,55 +295,90 @@ flowchart TD
     subgraph G [B2B Fields]
         G1[Select Retailer<br>All/Specific Retailers]
         G2[Select Product<br>Air API/Bus API]
-        G3[Select Category Type<br>Domestic/International]
-        G4[Operator Names]
-        G5[Slab<br>From Amount - To Amount]
-        G6[Service Charge<br>Percentage/Amount/N/A]
-        G7[Retailer Commission<br>Percentage/Amount]
-        G8[Inserted/Created Slab]
+        G3[Service Charge<br>Percentage/Amount/N/A]
+        G4[Retailer Commission<br>Percentage/Amount]
+        G5[Inserted/Created Slab]
         
-        G1 --> G2 --> G3 --> G4 --> G5 --> G6 --> G7 --> G8
+        G1 --> G2 --> G3 --> G4 --> G5
     end
     
     subgraph H [D2C Fields]
         H1[Hide: Select Retailer]
         H2[Select Product<br>Air API/Bus API]
-        H3[Select Category Type<br>Domestic/International]
-        H4[Operator Names]
-        H5[Slab<br>From Amount - To Amount]
-        H6[Service Charge<br>Percentage/Amount/N/A]
-        H7[Hide: Retailer Commission]
-        H8[Inserted/Created Slab]
+        H3[Service Charge<br>Percentage/Amount/N/A]
+        H4[Hide: Retailer Commission]
+        H5[Inserted/Created Slab]
         
-        H1 --> H2 --> H3 --> H4 --> H5 --> H6 --> H7 --> H8
+        H1 --> H2 --> H3 --> H4 --> H5
     end
 
-    %% Operator Selection Logic
-    G4 --> I[Operator Selection Logic]
-    H4 --> I
+    G2 --> I{Product Type}
+    H2 --> I
     
-    subgraph I [Operator Selection Logic]
-        J[Searchable Dropdown<br>Type to find operator]
-        J --> K{Operator Found?}
-        K -->|Yes| L[Select Specific Operator<br>e.g., IndiGo, Emirates]
-        K -->|No| M[Select 'All Operators'<br>Catch-all option]
+    I -->|Air API| J[Air Configuration Path]
+    I -->|Bus API| K[Bus Configuration Path]
+    
+    subgraph J [Air API Flow]
+        J1[Category Type<br>Domestic/International]
+        J2[Operator Names<br>Searchable Dropdown]
+        J3[Operator Selection Logic]
+        
+        J1 --> J2 --> J3
     end
     
-    E --> J
+    subgraph K [Bus API Flow]
+        K1[Category Type<br>AC/Non-AC]
+        K2[Seat Type<br>Seater/Sleeper]
+        
+        K1 --> K2
+    end
     
-    L --> N[Save Configuration]
-    M --> N
+    E --> J2
     
-    N --> O[Product Service Master Database]
+    J3 --> L[Save Configuration]
+    K2 --> L
+    
+    L --> M[Product Service Master Database]
 
     style B fill:#e3f2fd
     style C fill:#fff3e0
     style D fill:#e8f5e8
     style G fill:#fce4ec
     style H fill:#f3e5f5
-    style I fill:#fff9c4
+    style J fill:#bbdefb
+    style K fill:#fff3e0
     style E fill:#bbdefb
-    style O fill:#c8e6c9
+    style M fill:#c8e6c9
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Product-Specific Configuration Flows</h2>
+            
+            <div class="product-flow">
+                <h3>Product Selection Determines Configuration Path</h3>
+                
+                <div class="air-flow">
+                    <h4>🌐 Air API Configuration</h4>
+                    <p><strong>When Product = "Air API":</strong></p>
+                    <ul>
+                        <li><strong>Category Type:</strong> Domestic / International</li>
+                        <li><strong>Operator Names:</strong> Searchable dropdown with airline names</li>
+                        <li><strong>Operator Selection Logic:</strong> Search functionality with "All Operators" option</li>
+                        <li>Uses centralized airline database from Travel Master</li>
+                    </ul>
+                </div>
+                
+                <div class="bus-flow">
+                    <h4>🚌 Bus API Configuration</h4>
+                    <p><strong>When Product = "Bus API":</strong></p>
+                    <ul>
+                        <li><strong>Category Type:</strong> AC / Non-AC</li>
+                        <li><strong>Seat Type:</strong> Seater / Sleeper</li>
+                        <li>No operator database - focuses on service types instead</li>
+                        <li>Simplified configuration without operator selection</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -338,20 +398,21 @@ flowchart TD
                 </div>
                 
                 <div class="step-card">
-                    <h3><span class="step-number">3</span> Configure Basic Details</h3>
-                    <p>Select Product (Air API/Bus API), Category Type (Domestic/International), and configure the Operator using the searchable dropdown.</p>
+                    <h3><span class="step-number">3</span> Select Product Type</h3>
+                    <p>Choose between Air API or Bus API. This selection determines the subsequent configuration fields and flow.</p>
                 </div>
             </div>
             
             <div class="steps">
                 <div class="step-card">
-                    <h3><span class="step-number">4</span> Set Pricing Structure</h3>
-                    <p>Define the Slab (price range with From Amount and To Amount) and configure Service Charge (Percentage/Amount/Not Applicable).</p>
+                    <h3><span class="step-number">4</span> Product-Specific Configuration</h3>
+                    <p><strong>For Air API:</strong> Set Category Type (Domestic/International) and select Operator</p>
+                    <p><strong>For Bus API:</strong> Set Category Type (AC/Non-AC) and Seat Type (Seater/Sleeper)</p>
                 </div>
                 
                 <div class="step-card">
-                    <h3><span class="step-number">5</span> Configure Business Model Specifics</h3>
-                    <p>For B2B: Set Retailer Commission and specify retailer scope. For D2C: These fields are hidden as they don't apply.</p>
+                    <h3><span class="step-number">5</span> Set Service Charges & Commissions</h3>
+                    <p>Configure Service Charge and for B2B, set Retailer Commission. D2C hides commission fields.</p>
                 </div>
                 
                 <div class="step-card">
@@ -372,6 +433,8 @@ flowchart TD
                         <th>Type/Options</th>
                         <th>B2B</th>
                         <th>D2C</th>
+                        <th>Air API</th>
+                        <th>Bus API</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -381,6 +444,8 @@ flowchart TD
                         <td>Radio Button (B2B, D2C)</td>
                         <td>Required</td>
                         <td>Required</td>
+                        <td>Both</td>
+                        <td>Both</td>
                     </tr>
                     <tr>
                         <td>Select Retailer</td>
@@ -388,6 +453,8 @@ flowchart TD
                         <td>Dropdown (All Retailers, Specific Retailers)</td>
                         <td>Required</td>
                         <td>Hidden</td>
+                        <td>Both</td>
+                        <td>Both</td>
                     </tr>
                     <tr>
                         <td>Product</td>
@@ -395,26 +462,43 @@ flowchart TD
                         <td>Dropdown (Air API, Bus API)</td>
                         <td>Required</td>
                         <td>Required</td>
+                        <td>Both</td>
+                        <td>Both</td>
                     </tr>
                     <tr>
-                        <td>Category Type</td>
-                        <td>Geographical scope of the service</td>
+                        <td>Category Type (Air)</td>
+                        <td>Geographical scope for air services</td>
                         <td>Dropdown (Domestic, International)</td>
                         <td>Required</td>
                         <td>Required</td>
+                        <td>Required</td>
+                        <td>Hidden</td>
                     </tr>
                     <tr>
-                        <td>Operator Names</td>
-                        <td>Specific airline or bus company</td>
+                        <td>Category Type (Bus)</td>
+                        <td>Bus comfort type</td>
+                        <td>Dropdown (AC, Non-AC)</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                        <td>Hidden</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Operator Names (Air)</td>
+                        <td>Specific airline company</td>
                         <td>Searchable Dropdown with "All Operators" option</td>
                         <td>Required</td>
                         <td>Required</td>
+                        <td>Required</td>
+                        <td>Hidden</td>
                     </tr>
                     <tr>
-                        <td>Slab</td>
-                        <td>Price range for which this configuration applies</td>
-                        <td>From Amount - To Amount (numeric fields)</td>
+                        <td>Seat Type (Bus)</td>
+                        <td>Type of bus seating</td>
+                        <td>Dropdown (Seater, Sleeper)</td>
                         <td>Required</td>
+                        <td>Required</td>
+                        <td>Hidden</td>
                         <td>Required</td>
                     </tr>
                     <tr>
@@ -423,6 +507,8 @@ flowchart TD
                         <td>Percentage, Fixed Amount, or Not Applicable</td>
                         <td>Required</td>
                         <td>Required</td>
+                        <td>Both</td>
+                        <td>Both</td>
                     </tr>
                     <tr>
                         <td>Retailer Commission</td>
@@ -430,6 +516,8 @@ flowchart TD
                         <td>Percentage or Fixed Amount</td>
                         <td>Required</td>
                         <td>Hidden</td>
+                        <td>Both</td>
+                        <td>Both</td>
                     </tr>
                     <tr>
                         <td>Inserted/Created Slab</td>
@@ -437,6 +525,8 @@ flowchart TD
                         <td>Text/Reference field</td>
                         <td>Required</td>
                         <td>Required</td>
+                        <td>Both</td>
+                        <td>Both</td>
                     </tr>
                 </tbody>
             </table>
@@ -471,20 +561,24 @@ flowchart TD
         </section>
 
         <section class="content-section">
-            <h2>Operator Selection Logic</h2>
+            <h2>Operator Selection Logic (Air API Only)</h2>
             
             <div class="highlight">
-                <p>The Operator Selection uses a smart searchable dropdown with the following logic:</p>
+                <p>The Operator Selection for Air API uses a smart searchable dropdown with the following logic:</p>
                 <ol>
-                    <li><strong>Search Functionality:</strong> Administrators can type to find specific operators</li>
-                    <li><strong>Specific Operator Selection:</strong> When an operator is found and selected, the configuration applies only to that specific operator</li>
-                    <li><strong>"All Operators" Option:</strong> If the desired operator isn't found or for broad application, select "All Operators" to apply the configuration to all current and future operators matching the Product and Category Type</li>
-                    <li><strong>Dynamic Filtering:</strong> Operators are filtered based on the selected Product (Air/Bus) and Category Type (Domestic/International)</li>
+                    <li><strong>Search Functionality:</strong> Administrators can type to find specific airlines</li>
+                    <li><strong>Specific Operator Selection:</strong> When an airline is found and selected, the configuration applies only to that specific airline</li>
+                    <li><strong>"All Operators" Option:</strong> If the desired airline isn't found or for broad application, select "All Operators" to apply the configuration to all current and future airlines matching the Category Type</li>
+                    <li><strong>Dynamic Filtering:</strong> Airlines are filtered based on the selected Category Type (Domestic/International)</li>
                 </ol>
             </div>
             
-            <h3>Operator Management</h3>
-            <p>New airlines and bus operators are added through the <strong>Travel Master</strong> section within the Master Module. This centralized approach ensures consistency across all product service configurations.</p>
+            <h3>Airline Management</h3>
+            <p>New airlines are added through the <strong>Travel Master</strong> section within the Master Module. This centralized approach ensures consistency across all product service configurations.</p>
+            
+            <div class="highlight">
+                <p><strong>Note for Bus API:</strong> The Bus API configuration does not use operator selection. Instead, it focuses on service types (AC/Non-AC) and seat types (Seater/Sleeper) for simplified configuration.</p>
+            </div>
         </section>
     </div>
 
