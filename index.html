@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Service Master - Travel Module</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h3 {
+            color: #2a5298;
+            margin: 20px 0 15px;
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .step-card {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #2a5298;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .field-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .field-table th, .field-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        .field-table th {
+            background-color: #2a5298;
+            color: white;
+        }
+        
+        .field-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .highlight {
+            background-color: #fff9e6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .diagram-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .b2b-d2c-comparison {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .b2b-section, .d2c-section {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .b2b-section {
+            background: #f0f7ff;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .d2c-section {
+            background: #f9f0ff;
+            border-left: 4px solid #8e44ad;
+        }
+        
+        .b2b-title, .d2c-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .b2b-title {
+            color: #2a5298;
+        }
+        
+        .d2c-title {
+            color: #8e44ad;
+        }
+        
+        /* Improved list alignment */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .step-card p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        
+        .b2b-section ul, .d2c-section ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .b2b-section li, .d2c-section li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .highlight ul, .highlight ol {
+            margin: 10px 0;
+        }
+        
+        .highlight li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .steps {
+                flex-direction: column;
+            }
+            
+            .b2b-d2c-comparison {
+                flex-direction: column;
+            }
+            
+            .step-card {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Product Service Master - Travel Module</h1>
+            <p class="subtitle">Comprehensive guide for configuring travel services for B2B and D2C models</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="content-section">
+            <h2>Overview</h2>
+            <p>The Product Service Master is a core component of the Travel Module that allows administrators to configure and manage travel services for both Business-to-Business (B2B) and Direct-to-Consumer (D2C) models. This system enables flexible pricing, commission structures, and service configurations for airlines and bus operators.</p>
+            
+            <div class="highlight">
+                <strong>Key Features:</strong>
+                <ul>
+                    <li>Dual configuration paths for B2B and D2C models</li>
+                    <li>Centralized operator management through Travel Master</li>
+                    <li>Flexible slab-based pricing with service charges and commissions</li>
+                    <li>Smart operator selection with search and "All Operators" option</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>System Architecture & Flow</h2>
+            <p>The following diagram illustrates the complete flow of the Product Service Master configuration:</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    A[Admin User] --> B[Master Module]
+    
+    B --> C[Product Service Master]
+    B --> D[Travel Master<br>Manage Operators]
+    
+    D --> E[Operator Database<br>All Airlines & Bus Companies]
+    
+    C --> F{Select User Type}
+    
+    F --> G[B2B Configuration]
+    F --> H[D2C Configuration]
+    
+    subgraph G [B2B Fields]
+        G1[Select Retailer<br>All/Specific Retailers]
+        G2[Select Product<br>Air API/Bus API]
+        G3[Select Category Type<br>Domestic/International]
+        G4[Operator Names]
+        G5[Slab<br>From Amount - To Amount]
+        G6[Service Charge<br>Percentage/Amount/N/A]
+        G7[Retailer Commission<br>Percentage/Amount]
+        G8[Inserted/Created Slab]
+        
+        G1 --> G2 --> G3 --> G4 --> G5 --> G6 --> G7 --> G8
+    end
+    
+    subgraph H [D2C Fields]
+        H1[Hide: Select Retailer]
+        H2[Select Product<br>Air API/Bus API]
+        H3[Select Category Type<br>Domestic/International]
+        H4[Operator Names]
+        H5[Slab<br>From Amount - To Amount]
+        H6[Service Charge<br>Percentage/Amount/N/A]
+        H7[Hide: Retailer Commission]
+        H8[Inserted/Created Slab]
+        
+        H1 --> H2 --> H3 --> H4 --> H5 --> H6 --> H7 --> H8
+    end
+
+    %% Operator Selection Logic
+    G4 --> I[Operator Selection Logic]
+    H4 --> I
+    
+    subgraph I [Operator Selection Logic]
+        J[Searchable Dropdown<br>Type to find operator]
+        J --> K{Operator Found?}
+        K -->|Yes| L[Select Specific Operator<br>e.g., IndiGo, Emirates]
+        K -->|No| M[Select 'All Operators'<br>Catch-all option]
+    end
+    
+    E --> J
+    
+    L --> N[Save Configuration]
+    M --> N
+    
+    N --> O[Product Service Master Database]
+
+    style B fill:#e3f2fd
+    style C fill:#fff3e0
+    style D fill:#e8f5e8
+    style G fill:#fce4ec
+    style H fill:#f3e5f5
+    style I fill:#fff9c4
+    style E fill:#bbdefb
+    style O fill:#c8e6c9
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Configuration Steps</h2>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <h3><span class="step-number">1</span> Access Master Module</h3>
+                    <p>Navigate to the Master Module in the admin panel and select "Product Service Master" to begin configuration.</p>
+                </div>
+                
+                <div class="step-card">
+                    <h3><span class="step-number">2</span> Select User Type</h3>
+                    <p>Choose between B2B (Business-to-Business) or D2C (Direct-to-Consumer) based on the target audience for this service configuration.</p>
+                </div>
+                
+                <div class="step-card">
+                    <h3><span class="step-number">3</span> Configure Basic Details</h3>
+                    <p>Select Product (Air API/Bus API), Category Type (Domestic/International), and configure the Operator using the searchable dropdown.</p>
+                </div>
+            </div>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <h3><span class="step-number">4</span> Set Pricing Structure</h3>
+                    <p>Define the Slab (price range with From Amount and To Amount) and configure Service Charge (Percentage/Amount/Not Applicable).</p>
+                </div>
+                
+                <div class="step-card">
+                    <h3><span class="step-number">5</span> Configure Business Model Specifics</h3>
+                    <p>For B2B: Set Retailer Commission and specify retailer scope. For D2C: These fields are hidden as they don't apply.</p>
+                </div>
+                
+                <div class="step-card">
+                    <h3><span class="step-number">6</span> Finalize and Save</h3>
+                    <p>Add the Inserted/Created Slab information and save the configuration to the Product Service Master Database.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Field Specifications</h2>
+            
+            <table class="field-table">
+                <thead>
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Description</th>
+                        <th>Type/Options</th>
+                        <th>B2B</th>
+                        <th>D2C</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>User Type</td>
+                        <td>Determines the configuration path</td>
+                        <td>Radio Button (B2B, D2C)</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Select Retailer</td>
+                        <td>Specifies which retailers can access this service</td>
+                        <td>Dropdown (All Retailers, Specific Retailers)</td>
+                        <td>Required</td>
+                        <td>Hidden</td>
+                    </tr>
+                    <tr>
+                        <td>Product</td>
+                        <td>Type of travel service</td>
+                        <td>Dropdown (Air API, Bus API)</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Category Type</td>
+                        <td>Geographical scope of the service</td>
+                        <td>Dropdown (Domestic, International)</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Operator Names</td>
+                        <td>Specific airline or bus company</td>
+                        <td>Searchable Dropdown with "All Operators" option</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Slab</td>
+                        <td>Price range for which this configuration applies</td>
+                        <td>From Amount - To Amount (numeric fields)</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Service Charge</td>
+                        <td>Fee charged to the end customer</td>
+                        <td>Percentage, Fixed Amount, or Not Applicable</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                    <tr>
+                        <td>Retailer Commission</td>
+                        <td>Commission paid to B2B partners</td>
+                        <td>Percentage or Fixed Amount</td>
+                        <td>Required</td>
+                        <td>Hidden</td>
+                    </tr>
+                    <tr>
+                        <td>Inserted/Created Slab</td>
+                        <td>Administrative record of slab creation</td>
+                        <td>Text/Reference field</td>
+                        <td>Required</td>
+                        <td>Required</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="content-section">
+            <h2>B2B vs D2C Comparison</h2>
+            
+            <div class="b2b-d2c-comparison">
+                <div class="b2b-section">
+                    <div class="b2b-title">B2B Configuration</div>
+                    <ul>
+                        <li>Includes retailer selection field</li>
+                        <li>Requires retailer commission configuration</li>
+                        <li>Targeted at business partners and resellers</li>
+                        <li>Allows different pricing for different retailers</li>
+                        <li>More complex configuration with partnership terms</li>
+                    </ul>
+                </div>
+                
+                <div class="d2c-section">
+                    <div class="d2c-title">D2C Configuration</div>
+                    <ul>
+                        <li>No retailer selection (field hidden)</li>
+                        <li>No retailer commission (field hidden)</li>
+                        <li>Direct to end consumer pricing</li>
+                        <li>Simplified configuration process</li>
+                        <li>Focus on customer-facing service charges only</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Operator Selection Logic</h2>
+            
+            <div class="highlight">
+                <p>The Operator Selection uses a smart searchable dropdown with the following logic:</p>
+                <ol>
+                    <li><strong>Search Functionality:</strong> Administrators can type to find specific operators</li>
+                    <li><strong>Specific Operator Selection:</strong> When an operator is found and selected, the configuration applies only to that specific operator</li>
+                    <li><strong>"All Operators" Option:</strong> If the desired operator isn't found or for broad application, select "All Operators" to apply the configuration to all current and future operators matching the Product and Category Type</li>
+                    <li><strong>Dynamic Filtering:</strong> Operators are filtered based on the selected Product (Air/Bus) and Category Type (Domestic/International)</li>
+                </ol>
+            </div>
+            
+            <h3>Operator Management</h3>
+            <p>New airlines and bus operators are added through the <strong>Travel Master</strong> section within the Master Module. This centralized approach ensures consistency across all product service configurations.</p>
+        </section>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
